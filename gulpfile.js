@@ -20,6 +20,9 @@ var concat = require('gulp-concat');
 // https://www.npmjs.com/package/gulp-just-replace/
 var replace = require('gulp-just-replace');
 
+// https://www.npmjs.com/package/gulp-babel
+var babel = require('gulp-babel');
+
 gulp.task('pack_demo', function(cb) {
     webpack(require('./webpack.dev.js'), function (err, stats) {
         // 重要 打包过程中的语法错误反映在stats中
@@ -75,3 +78,11 @@ gulp.task('server', [
     gulp.watch('demo/**/*.less', ['reload_by_demo_css']);
 
 });
+
+gulp.task('default', function() {
+    gulp.src(['./src/index.js'])
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(gulp.dest('build'));
+})
